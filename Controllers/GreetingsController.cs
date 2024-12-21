@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace GreetingsDotnet.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
 public class GreetingsController : ControllerBase {
 
     private readonly IGreetingRepository _greetingRepository;
@@ -13,8 +12,14 @@ public class GreetingsController : ControllerBase {
         _greetingRepository = greetingRepository;
     }
 
-    [HttpGet]
+    [HttpGet("api/[controller]")]
     public async Task<ActionResult> GetAll() {
+        var greetings = await _greetingRepository.GetAllGreetingsAsync();
+        return Ok(greetings);
+    }
+    
+    [HttpGet("/")]
+    public async Task<ActionResult> GetAllRoot() {
         var greetings = await _greetingRepository.GetAllGreetingsAsync();
         return Ok(greetings);
     }
